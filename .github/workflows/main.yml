@@ -1,0 +1,51 @@
+name: Deploy React Vite App to S3
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    environment: aws environment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Vite project
+        run: npm run build
+
+      # Configure AWS credentials from GitHub Secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: me-south-1
+
+      # Sync dist/ to S3
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: s3-bucket-fullstack
+          AWS_REGION: me-south-1
+          SOURCE_DIR: dist
+
+      # OPTIONAL: Invalidate CloudFront cache
+      - name: Invalidate CloudFront Cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        with:
+          distribution-id: EIE8D80C6JUE2
+          paths: "/*"
+          aws-region: me-south-1
