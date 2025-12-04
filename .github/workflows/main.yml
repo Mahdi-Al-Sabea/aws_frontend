@@ -26,7 +26,6 @@ jobs:
         env:
           VITE_API_URL: ${{ secrets.PROD_API_URL }}
 
-      # Configure AWS credentials from GitHub Secrets
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -34,7 +33,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: me-south-1
 
-      # Sync dist/ to S3
       - name: Upload to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
@@ -44,10 +42,8 @@ jobs:
           AWS_REGION: me-south-1
           SOURCE_DIR: dist
 
-      # OPTIONAL: Invalidate CloudFront cache
-      - name: Invalidate CloudFront Cache
-        uses: chetan/invalidate-cloudfront-action@v2
+      - name: Create CloudFront invalidation
+        uses: aws-actions/cloudfront-invalidate-cache@v2
         with:
           distribution-id: EIE8D80C6JUE2
           paths: "/*"
-          aws-region: me-south-1
