@@ -35,7 +35,7 @@ function App() {
             Item Manager
           </h1>
           <p className="text-gray-400 text-lg">
-            A simple full-stack application deployed on AWS.
+            A simple full-stack application deployed on AWS A#########################.
           </p>
         </header>
 
