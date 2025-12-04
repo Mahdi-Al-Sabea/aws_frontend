@@ -41,9 +41,3 @@ jobs:
           AWS_S3_BUCKET: s3-bucket-fullstack
           AWS_REGION: me-south-1
           SOURCE_DIR: dist
-
-      - name: Create CloudFront invalidation
-        uses: aws-actions/cloudfront-invalidate-cache@v2
-        with:
-          distribution-id: EIE8D80C6JUE2
-          paths: "/*"
