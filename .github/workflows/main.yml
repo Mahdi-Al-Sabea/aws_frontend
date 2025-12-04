@@ -23,6 +23,8 @@ jobs:
 
       - name: Build Vite project
         run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.PROD_API_URL }}
 
       # Configure AWS credentials from GitHub Secrets
       - name: Configure AWS Credentials
