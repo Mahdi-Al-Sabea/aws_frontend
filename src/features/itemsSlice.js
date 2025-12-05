@@ -3,17 +3,17 @@ import axios from 'axios';
 
 // Async thunks
 export const fetchItems = createAsyncThunk('items/fetchItems', async () => {
-    const response = await axios.get('https://api.mahdisab.site/api/items');
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/items`);
     return response.data;
 });
 
 export const addItem = createAsyncThunk('items/addItem', async (item) => {
-    const response = await axios.post('https://api.mahdisab.site/api/items', item);
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/items`, item);
     return response.data;
 });
 
 export const deleteItem = createAsyncThunk('items/deleteItem', async (id) => {
-    await axios.delete(`https://api.mahdisab.site/api/items/${id}`);
+    await axios.delete(`${import.meta.env.VITE_API_URL}/api/items/${id}`);
     return id;
 });
 
